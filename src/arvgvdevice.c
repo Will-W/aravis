@@ -97,7 +97,7 @@ _read_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *b
 {
 	ArvGvcpPacket *packet;
 	size_t packet_size;
-	size_t answer_size;
+	long answer_size;
 	int count;
 	unsigned int n_retries = 0;
 	gboolean success = FALSE;
@@ -208,7 +208,7 @@ _write_memory (ArvGvDeviceIOData *io_data, guint32 address, guint32 size, void *
 		if (g_poll (&io_data->poll_in_event, 1, io_data->gvcp_timeout_ms) > 0) {
 			count = g_socket_receive (io_data->socket, io_data->buffer,
 						  ARV_GV_DEVICE_BUFFER_SIZE, NULL, NULL);
-			if (count >= arv_gvcp_packet_get_write_memory_ack_size ()) {
+			if (count >= (long)arv_gvcp_packet_get_write_memory_ack_size ()) {
 				ArvGvcpPacket *ack_packet = io_data->buffer;
 				ArvGvcpPacketType packet_type;
 				ArvGvcpCommand command;
@@ -800,7 +800,7 @@ static gboolean
 arv_gv_device_read_memory (ArvDevice *device, guint32 address, guint32 size, void *buffer, GError **error)
 {
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
-	int i;
+	guint i;
 	gint32 block_size;
 
 	for (i = 0; i < (size + ARV_GVCP_DATA_SIZE_MAX - 1) / ARV_GVCP_DATA_SIZE_MAX; i++) {
@@ -818,7 +818,7 @@ static gboolean
 arv_gv_device_write_memory (ArvDevice *device, guint32 address, guint32 size, void *buffer, GError **error)
 {
 	ArvGvDevice *gv_device = ARV_GV_DEVICE (device);
-	int i;
+	guint i;
 	gint32 block_size;
 
 	for (i = 0; i < (size + ARV_GVCP_DATA_SIZE_MAX - 1) / ARV_GVCP_DATA_SIZE_MAX; i++) {

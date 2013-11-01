@@ -78,7 +78,7 @@ arv_zip_build_file_list (ArvZip *zip)
         ArvZipFile *zip_file;
         const void *ptr;
         ptrdiff_t offset;
-        int i;
+        guint i;
 
         offset = zip->directory_offset;
 

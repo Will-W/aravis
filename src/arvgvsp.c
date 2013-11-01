@@ -162,7 +162,7 @@ arv_gvsp_packet_to_string (const ArvGvspPacket *packet, size_t packet_size)
 	ArvGvspContentType content_type;
 	GString *string;
 	char *c_string;
-	int i, j, index;
+	guint i, j, index;
 
 	string = g_string_new ("");
 

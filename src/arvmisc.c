@@ -138,7 +138,7 @@ void
 arv_statistic_reset (ArvStatistic *statistic)
 {
 	ArvHistogram *histogram;
-	int i, j;
+	guint i, j;
 
 	g_return_if_fail (statistic != NULL);
 
@@ -148,8 +148,8 @@ arv_statistic_reset (ArvStatistic *statistic)
 		histogram = &statistic->histograms[j];
 
 		histogram->last_seen_worst = 0;
-		histogram->best = 0x7fffffff;
-		histogram->worst = 0x80000000;
+		histogram->best = INT_MAX;
+		histogram->worst = INT_MIN;
 		histogram->and_more = histogram->and_less = 0;
 		for (i = 0; i < statistic->n_bins; i++)
 			histogram->bins[i] = 0;
@@ -224,7 +224,7 @@ arv_statistic_fill (ArvStatistic *statistic, guint histogram_id, int value, guin
 char *
 arv_statistic_to_string (const ArvStatistic *statistic)
 {
-	int i, j, bin_max;
+	guint i, j, bin_max;
 	gboolean max_found = FALSE;
 	GString *string;
 	char *str;
@@ -284,7 +284,7 @@ arv_statistic_to_string (const ArvStatistic *statistic)
 	for (j = 0; j < statistic->n_histograms; j++) {
 		if (j == 0)
 			g_string_append (string, "min     ");
-		if (statistic->histograms[j].best != 0x7fffffff)
+		if (statistic->histograms[j].best != INT_MAX)
 			g_string_append_printf (string, ";%8d", statistic->histograms[j].best);
 		else
 			g_string_append_printf (string, ";%8s", "n/a");
@@ -294,7 +294,7 @@ arv_statistic_to_string (const ArvStatistic *statistic)
 	for (j = 0; j < statistic->n_histograms; j++) {
 		if (j == 0)
 			g_string_append (string, "max     ");
-		if (statistic->histograms[j].worst != 0x80000000)
+		if (statistic->histograms[j].worst != INT_MIN)
 			g_string_append_printf (string, ";%8d", statistic->histograms[j].worst);
 		else
 			g_string_append_printf (string, ";%8s", "n/a");
@@ -429,7 +429,7 @@ arv_copy_memory_with_endianess (void *to, size_t to_size, guint to_endianess,
 {
 	char *to_ptr;
 	char *from_ptr;
-	int i;
+	guint i;
 
 	g_return_if_fail (to != NULL);
 	g_return_if_fail (from != NULL);
@@ -758,7 +758,7 @@ ArvGstCapsInfos arv_gst_caps_infos[] = {
 const char *
 arv_pixel_format_to_gst_caps_string (ArvPixelFormat pixel_format)
 {
-	int i;
+	guint i;
 
 	for (i = 0; i < G_N_ELEMENTS (arv_gst_caps_infos); i++)
 		if (arv_gst_caps_infos[i].pixel_format == pixel_format)

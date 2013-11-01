@@ -25,7 +25,7 @@
 static unsigned int
 _from_string (const char *string, const char **strings, unsigned int n_strings)
 {
-	int i;
+	guint i;
 
 	if (string == NULL)
 		return 0;
@@ -46,7 +46,7 @@ static const char *arv_auto_strings[] = {
 const char *
 arv_auto_to_string (ArvAuto value)
 {
-	return arv_auto_strings[CLAMP (value, 0, ARV_AUTO_CONTINUOUS)];
+	return arv_auto_strings[MIN (value, ARV_AUTO_CONTINUOUS)];
 }
 
 ArvAuto
@@ -64,7 +64,7 @@ static const char *arv_acquisition_mode_strings[] = {
 const char *
 arv_acquisition_mode_to_string (ArvAcquisitionMode value)
 {
-	return arv_acquisition_mode_strings[CLAMP (value, 0, ARV_ACQUISITION_MODE_SINGLE_FRAME)];
+	return arv_acquisition_mode_strings[MIN (value, ARV_ACQUISITION_MODE_SINGLE_FRAME)];
 }
 
 ArvAcquisitionMode

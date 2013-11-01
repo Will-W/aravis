@@ -121,8 +121,8 @@ typedef struct {
 	guint32 statistic_count;
 
 	ArvGvStreamSocketBuffer socket_buffer_option;
-	int socket_buffer_size;
-	int current_socket_buffer_size;
+	guint socket_buffer_size;
+	guint current_socket_buffer_size;
 } ArvGvStreamThreadData;
 
 static void
@@ -153,7 +153,8 @@ _send_packet_request (ArvGvStreamThreadData *thread_data,
 static void
 _update_socket (ArvGvStreamThreadData *thread_data, ArvBuffer *buffer)
 {
-	int buffer_size, fd;
+	guint buffer_size;
+	int fd;
 
 	if (thread_data->socket_buffer_option == ARV_GV_STREAM_SOCKET_BUFFER_FIXED &&
 	    thread_data->socket_buffer_size <= 0)
@@ -227,7 +228,7 @@ _process_data_block (ArvGvStreamThreadData *thread_data,
 {
 	size_t block_size;
 	ptrdiff_t block_offset;
-	ptrdiff_t block_end;
+	size_t block_end;
 
 	if (frame->buffer->status != ARV_BUFFER_STATUS_FILLING)
 		return;
@@ -364,7 +365,7 @@ _missing_packet_check (ArvGvStreamThreadData *thread_data,
 		       guint32 packet_id,
 		       guint64 time_us)
 {
-	int i;
+	guint i;
 
 	if (thread_data->packet_resend == ARV_GV_STREAM_PACKET_RESEND_NEVER ||
 	    frame->error_packet_received)
@@ -381,7 +382,7 @@ _missing_packet_check (ArvGvStreamThreadData *thread_data,
 					first_missing = i;
 			} else
 				if (first_missing >= 0) {
-					int j;
+					guint j;
 
 					arv_log_stream_thread ("[GvStream::_missing_packet_check]"
 							       " Resend request at dt = %Lu, packet id = %u/%u",
@@ -399,7 +400,7 @@ _missing_packet_check (ArvGvStreamThreadData *thread_data,
 		}
 
 		if (first_missing >= 0) {
-			int j;
+			guint j;
 
 			arv_log_stream_thread ("[GvStream::_missing_packet_check]"
 					       " Resend request at dt = %Lu, packet id = %u/%u",
@@ -488,7 +489,7 @@ _check_frame_completion (ArvGvStreamThreadData *thread_data,
 		}
 
 		if (can_close_frame &&
-		    frame->last_valid_packet == frame->n_packets - 1) {
+		    frame->last_valid_packet == (gint32)frame->n_packets - 1) {
 			frame->buffer->status = ARV_BUFFER_STATUS_SUCCESS;
 			arv_log_stream_thread ("[GvStream::_check_frame_completion] Completed frame %u",
 					       frame->frame_id);
@@ -568,7 +569,7 @@ arv_gv_stream_thread (void *data)
 	size_t read_count;
 	int timeout_ms;
 	int n_events;
-	int i;
+	guint i;
 	gboolean first_packet = TRUE;
 
 	thread_data->frames = NULL;
