@@ -124,6 +124,21 @@ arv_update_device_list (void)
 	}
 }
 
+void
+arv_clear_device_list (void)
+{
+	unsigned int i;
+
+	for (i = 0; i < G_N_ELEMENTS (interfaces); i++) {
+		ArvInterface *interface;
+		
+		if (interfaces[i].is_available) {
+			interface = interfaces[i].get_interface_instance ();
+			arv_interface_clear_device_list (interface);
+		}
+	}
+}
+
 unsigned int
 arv_get_n_devices (void)
 {

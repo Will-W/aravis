@@ -59,11 +59,13 @@ struct _ArvInterfaceClass {
 
 	void 		(*update_device_list)		(ArvInterface *interface, GArray *device_ids);
 	ArvDevice *	(*open_device)			(ArvInterface *interface, const char *device_id);
+    void        (*clear_device_list) (ArvInterface *interface);
 };
 
 GType arv_interface_get_type (void);
 
 void 			arv_interface_update_device_list 	(ArvInterface *interface);
+void 			arv_interface_clear_device_list 	(ArvInterface *interface);
 unsigned int 		arv_interface_get_n_devices 		(ArvInterface *interface);
 const char * 		arv_interface_get_device_id 		(ArvInterface *interface, unsigned int index);
 const char * 		arv_interface_get_device_physical_id 	(ArvInterface *interface, unsigned int index);

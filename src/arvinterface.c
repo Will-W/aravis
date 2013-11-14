@@ -86,6 +86,24 @@ arv_interface_update_device_list (ArvInterface *interface)
 }
 
 /**
+ * arv_interface_clear_device_list:
+ * @interface: a #ArvInterface
+ *
+ * Clears the internal list of available devices.
+ */
+
+void
+arv_interface_clear_device_list (ArvInterface *interface)
+{
+	g_return_if_fail (ARV_IS_INTERFACE (interface));
+
+    if (ARV_INTERFACE_GET_CLASS (interface)->clear_device_list)
+    {
+        ARV_INTERFACE_GET_CLASS (interface)->clear_device_list(interface);
+    }
+}
+
+/**
  * arv_interface_get_n_devices:
  * @interface: a #ArvInterface
  *

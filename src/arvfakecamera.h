@@ -32,7 +32,7 @@ typedef void (*ArvFakeCameraFillPattern) (ArvBuffer *buffer, void *fill_pattern_
 					  guint32 exposure_time_us, guint32 gain,
 					  ArvPixelFormat pixel_format);
 
-#define ARV_FAKE_CAMERA_MEMORY_SIZE	0x10000
+#define ARV_FAKE_CAMERA_MEMORY_SIZE	 0x10000
 
 /* To keep in sync with arv-fake-camera.xml */
 

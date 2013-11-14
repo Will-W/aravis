@@ -365,6 +365,16 @@ _device_infos_to_ginetaddress (ArvGvInterfaceDeviceInfos *device_infos)
 }
 
 static void
+arv_gv_interface_clear_device_list (ArvInterface *interface)
+{
+	ArvGvInterface *gv_interface;
+
+	gv_interface = ARV_GV_INTERFACE (interface);
+
+    g_hash_table_remove_all(gv_interface->priv->devices);
+}
+
+static void
 arv_gv_interface_update_device_list (ArvInterface *interface, GArray *device_ids)
 {
 	ArvGvInterface *gv_interface;
@@ -498,6 +508,7 @@ arv_gv_interface_class_init (ArvGvInterfaceClass *gv_interface_class)
 
 	interface_class->update_device_list = arv_gv_interface_update_device_list;
 	interface_class->open_device = arv_gv_interface_open_device;
+    interface_class->clear_device_list = arv_gv_interface_clear_device_list;
 }
 
 G_DEFINE_TYPE (ArvGvInterface, arv_gv_interface, ARV_TYPE_INTERFACE)
